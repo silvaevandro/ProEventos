@@ -1,2 +1,3 @@
-# proeventos
-Curso Udemy ProEventos
+# ProEventos
+
+Projeto do curso de .Net + Angular do udemy

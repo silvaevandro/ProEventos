@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using static ProEventos.API.WeatherForecast;
+using static ProEventos.API.Evento;
 
 namespace ProEventos.API.Controllers;
 

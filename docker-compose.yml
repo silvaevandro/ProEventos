@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    container_name: proeventos_db
+    hostname: proeventos_db
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=coderp
+      - MYSQL_DATABASE=proeventos
+    networks:
+      - app-connect
+  # webserver:
+  #   container_name: portal-transparencia-ws
+  #   hostname: portal-transparencia-ws
+  #   build:
+  #     context: .
+  #     dockerfile: DockerfileWS
+  #   ports: 
+  #     - "8081:8081"
+  #   networks:
+  #     - app-connect
+  #   volumes:
+  #     - .:/golang-docker
+  #   depends_on: 
+  #     - db
+
+volumes:
+  data: null
+networks:
+  app-connect:
+    driver: bridge

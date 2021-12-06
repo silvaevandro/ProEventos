@@ -1,7 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.Infra.Data.Context;
-using static ProEventos.API.Evento;
 
 namespace ProEventos.API.Controllers;
 
@@ -19,12 +17,12 @@ public class eventosController : ControllerBase
     [HttpGet]
     public IEnumerable<Evento> Get()
     {
-        return context.Eventos;
+        return context.eventos;
     }
 
     [HttpGet("{id}")]
     public Evento? Get(int id)
     {
-        return context.Eventos.FirstOrDefault(e => e.EventoId == id);
+        return context.eventos.FirstOrDefault(e => e.EventoId == id);
     }
 }

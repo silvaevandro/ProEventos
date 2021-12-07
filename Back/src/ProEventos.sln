@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEventos.Infra.Data", "Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEventos.Domain", "ProEventos.Domain\ProEventos.Domain.csproj", "{46BB2D39-D3B8-4BDE-9B3A-B1A5C8AAE409}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEventos.Application", "ProEventos.Application\ProEventos.Application.csproj", "{96045742-1568-4E52-8A9E-53C923352428}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{46BB2D39-D3B8-4BDE-9B3A-B1A5C8AAE409}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46BB2D39-D3B8-4BDE-9B3A-B1A5C8AAE409}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46BB2D39-D3B8-4BDE-9B3A-B1A5C8AAE409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96045742-1568-4E52-8A9E-53C923352428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96045742-1568-4E52-8A9E-53C923352428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96045742-1568-4E52-8A9E-53C923352428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96045742-1568-4E52-8A9E-53C923352428}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

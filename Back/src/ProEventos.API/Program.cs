@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
-builder.Services.AddDbContext<DataContext>(
+builder.Services.AddDbContext<ProEventosContext>(
     context => context.UseMySql(builder.Configuration.GetConnectionString("Default"), new MySqlServerVersion(new Version(8, 0, 11)))
 );
 builder.Services.AddControllers();

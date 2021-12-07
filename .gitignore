@@ -488,7 +488,7 @@ chrome-profiler-events*.json
 
 # misc
 Front/ProEventos-App/.angular/cache
-Front/ProEventos-App/..sass-cache
+Front/ProEventos-App/.sass-cache
 Front/ProEventos-App/.connect.lock
 Front/ProEventos-App/.coverage
 Front/ProEventos-App/.libpeerconnection.log
@@ -500,3 +500,6 @@ Front/ProEventos-App/.typings
 # System Files
 .DS_Store
 Thumbs.db
+Front/ProEventos-App/.angular/cache/angular-webpack
+Front/ProEventos-App/.angular/cache/babel-webpack
+

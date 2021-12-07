@@ -464,7 +464,7 @@ $RECYCLE.BIN/
 /bazel-out
 
 # dependencies
-/node_modules
+Front/ProEventos-App/node_modules
 
 # profiling files
 chrome-profiler-events*.json
@@ -487,15 +487,15 @@ chrome-profiler-events*.json
 .history/*
 
 # misc
-/.angular/cache
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+Front/ProEventos-App/.angular/cache
+Front/ProEventos-App/..sass-cache
+Front/ProEventos-App/.connect.lock
+Front/ProEventos-App/.coverage
+Front/ProEventos-App/.libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+Front/ProEventos-App/.typings
 
 # System Files
 .DS_Store

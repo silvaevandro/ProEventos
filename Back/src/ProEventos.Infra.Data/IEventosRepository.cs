@@ -2,7 +2,7 @@ using ProEventos.Domain.Entities;
 
 namespace ProEventos.Infra.Data
 {
-    public interface IEventosRepository
+    public interface IEventoRepository
     {
         //Eventos
         Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes);

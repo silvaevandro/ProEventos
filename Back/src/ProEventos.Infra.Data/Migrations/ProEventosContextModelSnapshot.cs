@@ -116,7 +116,7 @@ namespace ProEventos.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("palestrante");
+                    b.ToTable("palestrantes");
                 });
 
             modelBuilder.Entity("ProEventos.Domain.Entities.PalestranteEvento", b =>

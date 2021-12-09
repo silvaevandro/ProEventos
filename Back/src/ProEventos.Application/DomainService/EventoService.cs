@@ -6,9 +6,9 @@ namespace ProEventos.Application.DomainService
     public class EventoService : IEventoService
     {
         private readonly IGeralRepository geralRepository;
-        private readonly IEventosRepository eventoRepository;
+        private readonly IEventoRepository eventoRepository;
 
-        public EventoService(IGeralRepository geralRepository, IEventosRepository eventoRepository)
+        public EventoService(IGeralRepository geralRepository, IEventoRepository eventoRepository)
         {
             this.eventoRepository = eventoRepository;
             this.geralRepository = geralRepository;
@@ -20,7 +20,7 @@ namespace ProEventos.Application.DomainService
                 geralRepository.Add<Evento>(model);
                 if (await geralRepository.SaveChangeAsync())
                     return await eventoRepository.GetAllEventosByIdAsync(model.Id, false);
-                return null;    
+                return null;
             }
             catch (Exception e)
             {
@@ -32,7 +32,7 @@ namespace ProEventos.Application.DomainService
             try
             {
                 var evento = await eventoRepository.GetAllEventosByIdAsync(eventoId, false);
-                if (evento == null) 
+                if (evento == null)
                     return null;
 
                 model.Id = evento.Id;
@@ -55,7 +55,7 @@ namespace ProEventos.Application.DomainService
             try
             {
                 var evento = await eventoRepository.GetAllEventosByIdAsync(eventoId, false);
-                if (evento == null) 
+                if (evento == null)
                     throw new Exception("Evento para delete não encontrado.");
 
                 geralRepository.Update(evento);
@@ -71,7 +71,7 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                 return await eventoRepository.GetAllEventosAsync(includePalestrantes);
+                return await eventoRepository.GetAllEventosAsync(includePalestrantes);
             }
             catch (System.Exception ex)
             {
@@ -83,7 +83,7 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                 return await eventoRepository.GetAllEventosByIdAsync(eventoId, includePalestrantes);
+                return await eventoRepository.GetAllEventosByIdAsync(eventoId, includePalestrantes);
             }
             catch (System.Exception ex)
             {
@@ -95,10 +95,10 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                 var eventos = await eventoRepository.GetAllEventosByTemaAsync(tema, includePalestrantes);
-                 if (eventos == null)
+                var eventos = await eventoRepository.GetAllEventosByTemaAsync(tema, includePalestrantes);
+                if (eventos == null)
                     return null;
-                 return eventos;   
+                return eventos;
             }
             catch (System.Exception ex)
             {

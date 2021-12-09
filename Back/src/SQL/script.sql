@@ -1,0 +1,1 @@
+ dotnet ef migrations add Initial -s ../ProEventos.API -p ../ProEventos.Infra.Data --output-dir Migrations

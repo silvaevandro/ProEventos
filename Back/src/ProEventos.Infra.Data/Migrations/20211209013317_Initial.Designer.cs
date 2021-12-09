@@ -11,7 +11,7 @@ using ProEventos.Infra.Data.Context;
 namespace ProEventos.Infra.Data.Migrations
 {
     [DbContext(typeof(ProEventosContext))]
-    [Migration("20211207144848_Initial")]
+    [Migration("20211209013317_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,7 +118,7 @@ namespace ProEventos.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("palestrante");
+                    b.ToTable("palestrantes");
                 });
 
             modelBuilder.Entity("ProEventos.Domain.Entities.PalestranteEvento", b =>

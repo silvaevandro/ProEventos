@@ -40,7 +40,7 @@ namespace ProEventos.Infra.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "palestrante",
+                name: "palestrantes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -58,7 +58,7 @@ namespace ProEventos.Infra.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_palestrante", x => x.Id);
+                    table.PrimaryKey("PK_palestrantes", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -105,9 +105,9 @@ namespace ProEventos.Infra.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_palestrantes_eventos_palestrante_PalestranteId",
+                        name: "FK_palestrantes_eventos_palestrantes_PalestranteId",
                         column: x => x.PalestranteId,
-                        principalTable: "palestrante",
+                        principalTable: "palestrantes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -135,9 +135,9 @@ namespace ProEventos.Infra.Data.Migrations
                         principalTable: "eventos",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_redes_sociais_palestrante_PalestranteId",
+                        name: "FK_redes_sociais_palestrantes_PalestranteId",
                         column: x => x.PalestranteId,
-                        principalTable: "palestrante",
+                        principalTable: "palestrantes",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -178,7 +178,7 @@ namespace ProEventos.Infra.Data.Migrations
                 name: "eventos");
 
             migrationBuilder.DropTable(
-                name: "palestrante");
+                name: "palestrantes");
         }
     }
 }

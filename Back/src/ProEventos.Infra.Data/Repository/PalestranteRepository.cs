@@ -11,6 +11,7 @@ namespace ProEventos.Infra.Data.Repository
         public PalestranteRepository(ProEventosContext context)
         {
             this._context = context;
+            this._context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public Task<Palestrante[]> GetAllPalestrantesAsync(bool includeEventos = false)

@@ -4,13 +4,14 @@ using ProEventos.Infra.Data.Context;
 
 namespace ProEventos.Infra.Data.Repository
 {
-    public class EventoRepository : IEventosRepository
+    public class EventoRepository : IEventoRepository
     {
         private readonly ProEventosContext _context;
 
         public EventoRepository(ProEventosContext context)
         {
             this._context = context;
+            this._context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
         public async Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes)
         {
@@ -39,7 +40,15 @@ namespace ProEventos.Infra.Data.Repository
         }
         public async Task<Evento[]> GetAllEventosAsync(bool includePalestrantes = false)
         {
-            throw new NotImplementedException();
+            IQueryable<Evento> query = _context.eventos
+                                        .Include(e => e.Lotes)
+                                        .Include(e => e.RedesSociais);
+            if (includePalestrantes)
+                query = query.Include(e => e.PalestrantesEventos).ThenInclude(pe => pe.Palestrante);
+
+
+            query = query.OrderBy(e => e.Id);
+            return await query.ToArrayAsync();
         }
     }
 }

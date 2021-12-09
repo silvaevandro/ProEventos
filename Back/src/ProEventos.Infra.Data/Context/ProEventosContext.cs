@@ -16,9 +16,21 @@ namespace ProEventos.Infra.Data.Context
         public DbSet<PalestranteEvento> palestrantes_eventos { get; set; }
         public DbSet<RedeSocial> redes_sociais { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder){
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<PalestranteEvento>()
-            .HasKey(pe => new {pe.EventoId, pe.PalestranteId});
+            .HasKey(pe => new { pe.EventoId, pe.PalestranteId });
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.RedesSociais)
+                .WithOne(rs => rs.Evento)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Palestrante>()
+                .HasMany(p => p.RedesSociais)
+                .WithOne(rs => rs.Palestrante)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

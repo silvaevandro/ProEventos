@@ -1,5 +1,4 @@
-<h2>Eventos</h2>
-<hr>
+<app-titulo [titulo]="'Evento'"></app-titulo>
 <div class="container">
   <div class="form-inline">
     <div class="form mb-2">
@@ -18,7 +17,10 @@
     <thead class="table-dark">
       <tr>
         <th>#</th>
-        <th><button class="btn btn-outline-light btn-sm" (click)="mostrarImagem=!mostrarImagem">{{!mostrarImagem ? 'Exibir': 'Ocultar'}}</button></th>
+        <th><button class="btn btn-outline-light btn-sm" (click)="mostrarImagem=!mostrarImagem">
+          <i class="{{!mostrarImagem ? 'fa fa-eye' : 'fa fa-eye-slash'}}"></i>
+          {{!mostrarImagem ? 'Exibir': 'Ocultar'}}
+        </button></th>
         <th>Tema</th>
         <th>Data</th>
         <th>Local</th>
@@ -29,16 +31,20 @@
     </thead>
     <tbody *ngIf="eventos && eventosFiltrados.length">
       <tr *ngFor="let evento of eventosFiltrados">
-        <td>{{evento.eventoId}}</td>
+        <td>{{evento.id}}</td>
         <td><img [collapse]="!mostrarImagem" [isAnimated]="true" src="assets/{{evento.imagemURL}}" alt="" [style.width.px]="150"></td>
         <td>{{evento.tema}}</td>
-        <td>{{evento.dataEvento}}</td>
+        <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
         <td>{{evento.local}}</td>
         <td>{{evento.qtdPessoas}}</td>
         <td>{{evento.lote}}</td>
         <td>
-          <button type="button" class="btn btn-primary btn-sm me-md-3 ">Editar</button>
-          <button type="button" class="btn btn-danger btn-sm">Excluir</button>
+          <button type="button" class="btn btn-primary btn-sm me-md-3" tooltip="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </td>
       </tr>
     </tbody>
@@ -49,3 +55,14 @@
     </tfoot>
   </table>
 </div>
+
+<button type="button" class="btn btn-primary" (click)="openModal(template)">Open modal</button>
+<br><br>
+<pre class="card card-block card-header">{{message}}</pre>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que quer deletar este evento ?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">Não</button>
+  </div>
+</ng-template>

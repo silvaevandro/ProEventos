@@ -1,0 +1,70 @@
+<div class="card rounded shadow-sm p-3">
+  <div class="d-flex">
+    <div class="flex-fill pr-3">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Filtro</div>
+        </div>
+        <input [(ngModel)]="filtroLista" type="text" class="form-control mr-2" placeholder="Filtrar por tema e local...">
+        <a class="btn btn-outline-primary float-right" routerLink="/eventos/detalhe" >
+          <i class="fa fa-plus-circle my-1"></i>
+          Novo
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th class="d-none d-md-table-cell"><button class="btn btn-outline-light btn-sm"
+          (click)="mostrarImagem=!mostrarImagem">
+          <i class="{{!mostrarImagem ? 'fa fa-eye' : 'fa fa-eye-slash'}}"></i>
+          {{!mostrarImagem ? 'Exibir': 'Ocultar'}}
+        </button></th>
+        <th>Tema</th>
+        <th>Data</th>
+        <th class="d-none d-md-table-cell">Local</th>
+        <th class="d-none d-md-table-cell">Qtd. Pessoas</th>
+        <th class="d-none d-md-table-cell">Lote</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="eventos && eventosFiltrados.length">
+      <tr *ngFor="let evento of eventosFiltrados">
+        <td>{{evento.id}}</td>
+        <td class="d-none d-md-table-cell"><img [collapse]="!mostrarImagem" [isAnimated]="true"
+          src="assets/{{evento.imagemURL}}" alt="" [style.width.px]="150"></td>
+          <td>{{evento.tema}}</td>
+          <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
+          <td class="d-none d-md-table-cell">{{evento.local}}</td>
+          <td class="d-none d-md-table-cell">{{evento.qtdPessoas}}</td>
+          <td class="d-none d-md-table-cell">{{evento.lote}}</td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm me-md-3" tooltip="Editar" (click)="detalheEvento(evento.id)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="!eventos || !eventosFiltrados.length">
+        <tr>
+          <td colspan="8" class="text-center">
+            <h4>Não há registros</h4>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Tem certeza que quer deletar este evento ?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()">Sim</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">Não</button>
+    </div>
+  </ng-template>

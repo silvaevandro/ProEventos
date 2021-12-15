@@ -24,6 +24,8 @@ import { TituloComponent } from './shared/titulo/titulo.component';
 import { ContatosComponent } from './components/contatos/contatos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { EventoDetalheComponent } from './components/evento-detalhe/evento-detalhe.component';
+import { EventoListaComponent } from './components/evento-lista/evento-lista.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { PerfilComponent } from './components/perfil/perfil.component';
     ContatosComponent,
     DashboardComponent,
     PerfilComponent,
-    DateTimeFormatPipe
+    DateTimeFormatPipe,
+    EventoDetalheComponent,
+    EventoListaComponent
    ],
   imports: [
     BrowserModule,

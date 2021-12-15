@@ -6,11 +6,25 @@ import { EventoDetalheComponent } from './components/evento-detalhe/evento-detal
 import { EventoListaComponent } from './components/evento-lista/evento-lista.component';
 import { EventosComponent } from './components/eventos/eventos.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
-import { PerfilComponent } from './components/perfil/perfil.component';
+import { CadastroComponent } from './components/user/cadastro/cadastro.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { PerfilComponent } from './components/user/perfil/perfil.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   {
-    path: 'eventos', redirectTo: "eventos/lista",
+    path: 'eventos',
+    redirectTo: 'eventos/lista',
+  },
+
+  {
+    path: 'user',
+    component: UserComponent,
+    children: [
+      { path: 'cadastro', component: CadastroComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'perfil', component: PerfilComponent },
+    ],
   },
   {
     path: 'eventos',
@@ -19,23 +33,19 @@ const routes: Routes = [
       { path: 'detalhe/:id', component: EventoDetalheComponent },
       { path: 'detalhe', component: EventoDetalheComponent },
       { path: 'lista', component: EventoListaComponent },
-    ]
+    ],
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
   },
   {
     path: 'palestrantes',
-    component: PalestrantesComponent
-  },
-  {
-    path: 'perfil',
-    component: PerfilComponent
+    component: PalestrantesComponent,
   },
   {
     path: 'contatos',
-    component: ContatosComponent
+    component: ContatosComponent,
   },
   {
     path: '',
@@ -46,6 +56,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

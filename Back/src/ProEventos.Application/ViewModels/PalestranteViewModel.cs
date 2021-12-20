@@ -1,6 +1,6 @@
-namespace ProEventos.Domain.Entities
+namespace ProEventos.Application.ViewModels
 {
-    public class Palestrante
+    public class PalestranteViewModel
     {
         public int Id { get; set; }
         public string? Nome { get; set; }
@@ -8,7 +8,7 @@ namespace ProEventos.Domain.Entities
         public string? ImagemUrl { get; set; }
         public string? Telefone { get; set; }
         public string? Email { get; set; }
-        public IEnumerable<RedeSocial>? RedesSociais { get; set; }
-        public IEnumerable<PalestranteEvento>? PalestrantesEventos { get; set; }
+        public IEnumerable<RedeSocialViewModel>? RedesSociais { get; set; }
+        //public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }        
     }
 }

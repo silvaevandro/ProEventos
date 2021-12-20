@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.Application.DomainService;
-using ProEventos.Domain.Entities;
-using ProEventos.Infra.Data.Context;
+using ProEventos.Application.ViewModels;
 
 namespace ProEventos.API.Controllers;
 
@@ -23,7 +22,7 @@ public class eventosController : ControllerBase
         {
             var eventos = await eventoService.GetAllEventosAsync(true);
             if (eventos == null)
-                return NotFound("Nenhum evento encontrado.");
+                return NoContent();
             return Ok(eventos);
         }
         catch (System.Exception e)
@@ -39,7 +38,7 @@ public class eventosController : ControllerBase
         {
             var evento = await eventoService.GetAllEventosByIdAsync(id, true);
             if (evento == null)
-                return NotFound("Evento por ID encontrado.");
+                return NoContent();
             return Ok(evento);
         }
         catch (System.Exception e)
@@ -53,10 +52,11 @@ public class eventosController : ControllerBase
     {
         try
         {
-            var evento = await eventoService.GetAllEventosByTemaAsync(tema, true);
-            if (evento == null)
-                return NotFound("Evento por Tema encontrado.");
-            return Ok(evento);
+            var eventos = await eventoService.GetAllEventosByTemaAsync(tema, true);
+            if (eventos == null)
+                return NoContent();
+
+            return Ok(eventos);
         }
         catch (System.Exception e)
         {
@@ -65,7 +65,7 @@ public class eventosController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Evento model)
+    public async Task<IActionResult> Post(EventoViewModel model)
     {
         try
         {
@@ -81,7 +81,7 @@ public class eventosController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Evento model)
+    public async Task<IActionResult> Put(int id, EventoViewModel model)
     {
         try
         {

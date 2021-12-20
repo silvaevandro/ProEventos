@@ -18,7 +18,7 @@ namespace ProEventos.Application.ViewModels
         public int QtdPessoas { get; set; }
         public int Lote { get; set; }
 
-        [Required(ErrorMessage = "Imabem deve ser informada")]
+        [Required(ErrorMessage = "Imagem deve ser informada")]
         [RegularExpression(@".*\.(gif|jpg)$", ErrorMessage = "Imagem deve ser do tipo gif ou jpg")]
         public string? ImagemURL { get; set; }
 
@@ -28,6 +28,7 @@ namespace ProEventos.Application.ViewModels
 
         [Display(Name = "e-mail")]
         [EmailAddress(ErrorMessage = "{0} deve ser um e-mail válido")]
+        [Required]
         public string? Email { get; set; }
         public IEnumerable<LoteViewModel>? Lotes { get; set; }
         public IEnumerable<RedeSocialViewModel>? RedesSociais { get; set; }

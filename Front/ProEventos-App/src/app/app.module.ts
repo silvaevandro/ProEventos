@@ -9,10 +9,13 @@ import { EventosComponent } from './components/eventos/eventos.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
 import { NavComponent } from './shared/nav/nav.component';
 
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -28,6 +31,8 @@ import { EventoListaComponent } from './components/evento-lista/evento-lista.com
 import { UserComponent } from './components/user/user.component';
 import { CadastroComponent } from './components/user/cadastro/cadastro.component';
 import { LoginComponent } from './components/user/login/login.component';
+
+defineLocale('pt-br', ptBrLocale);
 
 @NgModule({
   declarations: [
@@ -58,6 +63,7 @@ import { LoginComponent } from './components/user/login/login.component';
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

@@ -101,7 +101,7 @@ public class eventosController : ControllerBase
     {
         try
         {
-            return await eventoService.DeleteEvento(id) ? Ok("Deletado") : BadRequest("Erro ao deletar o evento.");
+            return await eventoService.DeleteEvento(id) ? Ok(new { message = "Deletado" }) : BadRequest("Erro ao deletar o evento.");
         }
         catch (System.Exception e)
         {

@@ -86,9 +86,9 @@ export class EventoListaComponent implements OnInit {
     this.modalRef?.hide();
     this.spinner.show();
     this.eventoService.deleteEvento(this.eventoId).subscribe({
-     next: (result: string) => {
-       console.log(result);
-        if (result == 'Deletado'){
+      next: (result: any) => {
+        if (result.message == "Deletado") {
+          console.log(result);
           this.toastr.success("Evento deletado com sucesso.", 'Deletado!')
           this.spinner.hide();
           this.getEventos();

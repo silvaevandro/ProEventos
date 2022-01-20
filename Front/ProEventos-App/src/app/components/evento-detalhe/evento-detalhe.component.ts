@@ -20,6 +20,7 @@ export class EventoDetalheComponent implements OnInit {
   form!: FormGroup;
   locale = 'pt-BR';
   evento!: Evento;
+  trnMode = "post";
 
   constructor( private fb: FormBuilder,
                private localeService: BsLocaleService,
@@ -40,8 +41,13 @@ export class EventoDetalheComponent implements OnInit {
   }
 
   public carregarEvento(): void{
-    this.spinner.show();
+
     const eventoIdParm = this.router.snapshot.paramMap.get('id');
+    console.log(eventoIdParm)
+    if (!eventoIdParm )
+      return
+
+    this.trnMode = 'put'
     if (eventoIdParm != null){
       this.eventoService.getEventoById(+eventoIdParm).subscribe({
         next: (evento: Evento) => {
@@ -65,6 +71,39 @@ export class EventoDetalheComponent implements OnInit {
 
   public resetForm(): void{
     this.form.reset();
+  }
+
+  public salvarAlteracao(): void {
+    this.spinner.show();
+    if (this.form.valid) {
+      if (this.trnMode == 'post') {
+        this.evento = { ... this.form.value }
+        this.eventoService.postEvento(this.evento).subscribe({
+          next: () => {
+            this.toastr.success("Evento salvo com sucesso!", "Sucesso")
+          },
+          error: (err: any) => {
+            console.error(err)
+            this.toastr.error("Falha ao salvar o evento", "Erro")
+          },
+          complete: () => {}
+        }).add(() => { this.spinner.hide() });
+      }
+
+      if (this.trnMode == 'put') {
+        this.evento = {id: this.evento.id, ... this.form.value }
+        this.eventoService.putEvento(this.evento,).subscribe({
+          next: () => {
+            this.toastr.success("Evento salvo com sucesso!", "Sucesso")
+          },
+          error: (err: any) => {
+            console.error(err)
+            this.toastr.error("Falha ao salvar o evento", "Erro")
+          },
+          complete: () => {}
+        }).add(() => { this.spinner.hide() });
+      }
+    }
   }
 
   public validation(): void {

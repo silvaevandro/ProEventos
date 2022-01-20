@@ -84,8 +84,8 @@
         <button class="btn btn-danger mr-auto border" (click)="resetForm()">
           Cancelar Alteração
         </button>
-        <button class="btn btn-success" [disabled]="form.invalid">
-          <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
+        <button class="btn btn-success" [disabled]="form.invalid" (click)="salvarAlteracao()">
+
           Salvar Evento
         </button>
       </div>

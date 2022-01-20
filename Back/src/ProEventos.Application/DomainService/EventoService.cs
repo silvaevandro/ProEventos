@@ -69,7 +69,7 @@ namespace ProEventos.Application.DomainService
                 if (evento == null)
                     throw new Exception("Evento para delete não encontrado.");
 
-                geralRepository.Update(evento);
+                geralRepository.Delete(evento);
                 return await geralRepository.SaveChangeAsync();
             }
             catch (Exception ex)

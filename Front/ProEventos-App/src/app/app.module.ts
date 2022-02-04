@@ -11,6 +11,7 @@ import { NavComponent } from './shared/nav/nav.component';
 
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -18,6 +19,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { EventoService } from 'src/services/evento.service';
@@ -31,6 +33,7 @@ import { EventoListaComponent } from './components/evento-lista/evento-lista.com
 import { UserComponent } from './components/user/user.component';
 import { CadastroComponent } from './components/user/cadastro/cadastro.component';
 import { LoginComponent } from './components/user/login/login.component';
+import { LoteService } from 'src/services/lote.service';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -59,6 +62,7 @@ defineLocale('pt-br', ptBrLocale);
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
+    NgxCurrencyModule,
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -72,7 +76,7 @@ defineLocale('pt-br', ptBrLocale);
     }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [EventoService],
+  providers: [EventoService, LoteService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -19,6 +19,7 @@ namespace ProEventos.Application.ViewModels
         public int Lote { get; set; }
 
         [Required(ErrorMessage = "Imagem deve ser informada")]
+        [Display(Name = "Imagem")]
         [RegularExpression(@".*\.(gif|jpg)$", ErrorMessage = "Imagem deve ser do tipo gif ou jpg")]
         public string? ImagemURL { get; set; }
 

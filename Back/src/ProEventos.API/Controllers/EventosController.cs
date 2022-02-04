@@ -6,11 +6,11 @@ namespace ProEventos.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class eventosController : ControllerBase
+public class EventosController : ControllerBase
 {
     public IEventoService eventoService { get; set; }
 
-    public eventosController(IEventoService eventoService)
+    public EventosController(IEventoService eventoService)
     {
         this.eventoService = eventoService;
     }

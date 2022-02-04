@@ -27,8 +27,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IEventoService, EventoService>();
+builder.Services.AddScoped<ILoteService, LoteService>();
+
 builder.Services.AddScoped<IGeralRepository, GeralRepository>();
 builder.Services.AddScoped<IEventoRepository, EventoRepository>();
+builder.Services.AddScoped<ILoteRepository, LoteRepository>();
 
 
 var app = builder.Build();

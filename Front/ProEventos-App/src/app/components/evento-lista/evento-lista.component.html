@@ -5,9 +5,16 @@
         <div class="input-group-prepend">
           <div class="input-group-text">Filtro</div>
         </div>
-        <input [(ngModel)]="filtroLista" type="text" class="form-control mr-2"
-          placeholder="Filtrar por tema e local...">
-        <a class="btn btn-outline-primary float-right" routerLink="/eventos/detalhe">
+        <input
+          [(ngModel)]="filtroLista"
+          type="text"
+          class="form-control mr-2"
+          placeholder="Filtrar por tema e local..."
+        />
+        <a
+          class="btn btn-outline-primary float-right"
+          routerLink="/eventos/detalhe"
+        >
           <i class="fa fa-plus-circle my-1"></i>
           Novo
         </a>
@@ -19,11 +26,17 @@
     <thead class="table-dark">
       <tr>
         <th>#</th>
-        <th class="d-none d-md-table-cell"><button class="btn btn-outline-light btn-sm"
-            (click)="mostrarImagem=!mostrarImagem">
-            <i class="{{!mostrarImagem ? 'fa fa-eye' : 'fa fa-eye-slash'}}"></i>
-            {{!mostrarImagem ? 'Exibir': 'Ocultar'}}
-          </button></th>
+        <th class="d-none d-md-table-cell">
+          <button
+            class="btn btn-outline-light btn-sm"
+            (click)="mostrarImagem = !mostrarImagem"
+          >
+            <i
+              class="{{ !mostrarImagem ? 'fa fa-eye' : 'fa fa-eye-slash' }}"
+            ></i>
+            {{ !mostrarImagem ? "Exibir" : "Ocultar" }}
+          </button>
+        </th>
         <th>Tema</th>
         <th>Data</th>
         <th class="d-none d-md-table-cell">Local</th>
@@ -34,21 +47,35 @@
     </thead>
     <tbody *ngIf="eventos && eventosFiltrados.length">
       <tr *ngFor="let evento of eventosFiltrados">
-        <td>{{evento.id}}</td>
-        <td class="d-none d-md-table-cell"><img [collapse]="!mostrarImagem" [isAnimated]="true"
-            src="assets/{{evento.imagemURL}}" alt="" [style.width.px]="150"></td>
-        <td>{{evento.tema}}</td>
-        <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
-        <td class="d-none d-md-table-cell">{{evento.local}}</td>
-        <td class="d-none d-md-table-cell">{{evento.qtdPessoas}}</td>
-        <td class="d-none d-md-table-cell">{{evento.lote}}</td>
+        <td>{{ evento.id }}</td>
+        <td class="d-none d-md-table-cell">
+          <img
+            [collapse]="!mostrarImagem"
+            [isAnimated]="true"
+            [src]="mostraImage(evento.imagemURL!)"
+            [style.width.px]="150"
+          />
+        </td>
+        <td>{{ evento.tema }}</td>
+        <td>{{ evento.dataEvento | DateTimeFormatPipe }}</td>
+        <td class="d-none d-md-table-cell">{{ evento.local }}</td>
+        <td class="d-none d-md-table-cell">{{ evento.qtdPessoas }}</td>
+        <td class="d-none d-md-table-cell">{{ evento.lote }}</td>
         <td>
-          <button type="button" class="btn btn-primary btn-sm me-md-3" tooltip="Editar"
-            (click)="detalheEvento(evento.id)">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm me-md-3"
+            tooltip="Editar"
+            (click)="detalheEvento(evento.id)"
+          >
             <i class="fas fa-edit"></i>
           </button>
-          <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir"
-            (click)="openModal($event, template, evento.id)">
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            tooltip="Excluir"
+            (click)="openModal($event, template, evento.id)"
+          >
             <i class="fas fa-trash-alt"></i>
           </button>
         </td>
@@ -66,8 +93,12 @@
 
 <ng-template #template>
   <div class="modal-body text-center">
-    <p>Tem certeza que quer deletar o evento {{this.eventoId}} ?</p>
-    <button type="button" class="btn btn-default" (click)="confirm()">Sim</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">Não</button>
+    <p>Tem certeza que quer deletar o evento {{ this.eventoId }} ?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">
+      Sim
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      Não
+    </button>
   </div>
 </ng-template>

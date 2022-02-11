@@ -9,6 +9,6 @@ namespace ProEventos.Application.DomainService
         Task<bool> DeleteEvento(int eventoId);
         Task<EventoViewModel[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false);
         Task<EventoViewModel[]> GetAllEventosAsync(bool includePalestrantes = false);
-        Task<EventoViewModel> GetAllEventosByIdAsync(int eventoId, bool includePalestrantes = false);
+        Task<EventoViewModel> GetEventoByIdAsync(int eventoId, bool includePalestrantes = false);
     }
 }

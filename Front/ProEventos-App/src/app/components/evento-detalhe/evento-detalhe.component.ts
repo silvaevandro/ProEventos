@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '@enviroments/environment';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService, Spinner } from 'ngx-spinner';
@@ -31,6 +32,8 @@ export class EventoDetalheComponent implements OnInit {
   eventoId: number = 0;
   loteAtual = { id: 0, nome: '', index: 0 };
   modalRef!: BsModalRef;
+  imagemURL = 'assets/img/semimagem.jpeg';
+  file!: File;
 
   constructor( private fb: FormBuilder,
                private localeService: BsLocaleService,
@@ -75,6 +78,11 @@ export class EventoDetalheComponent implements OnInit {
           next: (evento: Evento) => {
             this.evento = { ...evento };
             this.form.patchValue(this.evento);
+
+            if (this.evento.imagemURL != null && this.evento.imagemURL != '')
+              this.imagemURL = environment.apiURLImages + this.evento.imagemURL
+
+
             this.evento.lotes?.forEach(lote => {
               this.lotes.push(this.criarLote(lote))
             });
@@ -146,9 +154,7 @@ export class EventoDetalheComponent implements OnInit {
   }
 
   public salvarLote(): void {
-    console.log('entrei salvar lote ' + this.lotes.valid)
     if (this.lotes.valid) {
-      console.log('entrei if salvar lote')
 
       this.spinner.show();
       this.loteService.saveLote(this.evento.id, this.form.value.lotes).subscribe({
@@ -219,6 +225,31 @@ export class EventoDetalheComponent implements OnInit {
     return nome === null || nome === "" ? 'Nome do lote' : nome
   }
 
+  public onFileChange(ev: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+
+    this.file = ev.target.files[0];
+    reader.readAsDataURL(this.file);
+    this.uploadImagem();
+  }
+
+  public uploadImagem(): void {
+    this.spinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe({
+      next:() => {
+        this.carregarEvento(0);
+        this.toastr.success('Imagem atualizada com Sucesso', 'Sucesso!');
+      },
+      error:(error: any) => {
+        this.toastr.error('Erro ao fazer upload de imagem', 'Erro!');
+        console.error(error);
+      }
+    }).add(() => this.spinner.hide());
+  }
+
   public validation(): void {
     this.form = this.fb.group({
       tema: [
@@ -233,7 +264,7 @@ export class EventoDetalheComponent implements OnInit {
       dataEvento: ['', Validators.required],
       qtdPessoas: ['', Validators.required],
       //lote: ['', Validators.required],
-      imagemURL: ['', Validators.required],
+      //imagemURL: ['', Validators.required],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       lotes: this.fb.array([])

@@ -6,6 +6,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { environment } from '@enviroments/environment';
 
 
 type NewType = ToastrService;
@@ -80,6 +81,12 @@ export class EventoListaComponent implements OnInit {
     event.stopPropagation();
     this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  public mostraImage(imagemURL: string): string{
+    return imagemURL != ""
+      ? `${environment.apiURL}/resources/Images/${imagemURL}`
+      : "assets/img/semimagem.jpeg"
   }
 
   confirm(): void {

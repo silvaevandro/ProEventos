@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProEventos.Application.DomainService;
 using ProEventos.Infra.Data.Repository;
 using ProEventos.Infra.Data;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -45,6 +46,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(MyAllowSpecificOrigins);
 
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+    RequestPath = new PathString("/Resources")
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -56,4 +63,4 @@ app.MapControllers();
 app.Run();
 
 
-//, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), b => b.MigrationsAssembly("ProEventos.API")
+//, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), b => b.MigrationsAssembly("ProEventos.API)

@@ -57,7 +57,9 @@ namespace ProEventos.Application.DomainService
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception(ex.InnerException.Message);
+
+
             }
         }
 
@@ -91,7 +93,7 @@ namespace ProEventos.Application.DomainService
             }
         }
 
-        public async Task<EventoViewModel> GetAllEventosByIdAsync(int eventoId, bool includePalestrantes = false)
+        public async Task<EventoViewModel> GetEventoByIdAsync(int eventoId, bool includePalestrantes = false)
         {
             try
             {

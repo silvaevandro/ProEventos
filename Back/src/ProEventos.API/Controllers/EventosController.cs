@@ -1,21 +1,28 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.API.Extensions;
 using ProEventos.Application.DomainService;
 using ProEventos.Application.ViewModels;
 
 namespace ProEventos.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class EventosController : ControllerBase
 {
-    private readonly IWebHostEnvironment hostEnvironment;
+    private readonly IWebHostEnvironment _hostEnvironment;
+    private readonly IUserService _userService;
 
-    public IEventoService eventoService { get; set; }
+    public IEventoService _eventoService { get; set; }
 
-    public EventosController(IEventoService eventoService, IWebHostEnvironment hostEnvironment)
+    public EventosController(IEventoService eventoService,
+                             IWebHostEnvironment hostEnvironment,
+                             IUserService userService)
     {
-        this.eventoService = eventoService;
-        this.hostEnvironment = hostEnvironment;
+        _eventoService = eventoService;
+        _hostEnvironment = hostEnvironment;
+        _userService = userService;
     }
 
     [HttpGet]
@@ -23,14 +30,14 @@ public class EventosController : ControllerBase
     {
         try
         {
-            var eventos = await eventoService.GetAllEventosAsync(true);
+            var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), true);
             if (eventos == null)
                 return NoContent();
             return Ok(eventos);
         }
         catch (System.Exception e)
         {
-            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar Eventos: {e.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar Eventos: {e.Message}");
         }
     }
 
@@ -39,7 +46,7 @@ public class EventosController : ControllerBase
     {
         try
         {
-            var evento = await eventoService.GetEventoByIdAsync(id, true);
+            var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), id, true);
             if (evento == null)
                 return NoContent();
             return Ok(evento);
@@ -55,7 +62,7 @@ public class EventosController : ControllerBase
     {
         try
         {
-            var eventos = await eventoService.GetAllEventosByTemaAsync(tema, true);
+            var eventos = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
             if (eventos == null)
                 return NoContent();
 
@@ -72,7 +79,7 @@ public class EventosController : ControllerBase
     {
         try
         {
-            var evento = await eventoService.AddEvento(model);
+            var evento = await _eventoService.AddEvento(User.GetUserId(), model);
             if (evento == null)
                 return BadRequest("Erro ao tentar adicionar evento.");
             return Ok(evento);
@@ -91,7 +98,7 @@ public class EventosController : ControllerBase
             if (Request.Form.Files.Count == 0)
                 return NoContent();
 
-            var evento = await eventoService.GetEventoByIdAsync(eventoId, false);
+            var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), eventoId, false);
             if (evento == null)
                 return NoContent();
 
@@ -101,7 +108,7 @@ public class EventosController : ControllerBase
                 DeleteImage(evento.ImagemURL!);
                 evento.ImagemURL = await SaveImage(file);
             }
-            var eventoRetorno = await eventoService.UpdateEvento(eventoId, evento);
+            var eventoRetorno = await _eventoService.UpdateEvento(User.GetUserId(), eventoId, evento);
             if (eventoRetorno == null)
                 return BadRequest("Erro ao realizar o Upload da Imagem.");
             return Ok(eventoRetorno);
@@ -118,7 +125,7 @@ public class EventosController : ControllerBase
     {
         try
         {
-            var evento = await eventoService.UpdateEvento(id, model);
+            var evento = await _eventoService.UpdateEvento(User.GetUserId(), id, model);
             if (evento == null)
                 return BadRequest("Erro ao tentar atualizar o evento.");
             return Ok(evento);
@@ -135,11 +142,11 @@ public class EventosController : ControllerBase
         try
         {
 
-            var evento = await eventoService.GetEventoByIdAsync(eventoId, false);
+            var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), eventoId, false);
             if (evento == null)
                 return NoContent();
 
-            if (await eventoService.DeleteEvento(eventoId))
+            if (await _eventoService.DeleteEvento(User.GetUserId(), eventoId))
             {
                 DeleteImage(evento.ImagemURL!);
                 return Ok(new { message = "Deletado" });
@@ -162,7 +169,7 @@ public class EventosController : ControllerBase
                                           .ToArray()
                                          ).Replace(' ', '-');
         imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
-        var imagePath = Path.Combine(hostEnvironment.ContentRootPath, @"Resources/Images", imageName);
+        var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @"Resources/Images", imageName);
 
         using (var fileStream = new FileStream(imagePath, FileMode.Create))
         {
@@ -174,7 +181,7 @@ public class EventosController : ControllerBase
     [NonAction]
     private void DeleteImage(string imageName)
     {
-        var imagePath = Path.Combine(hostEnvironment.ContentRootPath, @"Resources/Images", imageName);
+        var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @"Resources/Images", imageName);
         if (System.IO.File.Exists(imagePath))
         {
             System.IO.File.Delete(imagePath);

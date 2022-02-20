@@ -33,6 +33,8 @@ namespace ProEventos.Application.ViewModels
         public string? Email { get; set; }
         public IEnumerable<LoteViewModel>? Lotes { get; set; }
         public IEnumerable<RedeSocialViewModel>? RedesSociais { get; set; }
+        public int UserId { get; set; }
+        public UserViewModel? UserViewModel { get; set; }
         //public IEnumerable<PalestranteEvento>? PalestrantesEventos { get; set; }        
     }
 }

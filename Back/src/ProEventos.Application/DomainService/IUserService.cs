@@ -8,7 +8,7 @@ namespace ProEventos.Application.DomainService
         Task<bool> UserExists(string username);
         Task<UserUpdateViewModel> GetUserByUserNameAsync(string username);
         Task<SignInResult> CheckUserPasswordAsync(UserUpdateViewModel userUpdateViewModel, string password);
-        Task<UserViewModel> CreateAccontAsync(UserViewModel userViewModel);
+        Task<UserUpdateViewModel> CreateAccontAsync(UserViewModel userViewModel);
         Task<UserUpdateViewModel> UpdateUser(UserUpdateViewModel userUpdateViewModel);
 
     }

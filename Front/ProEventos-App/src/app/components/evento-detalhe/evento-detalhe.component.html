@@ -5,18 +5,20 @@
   >
     <div class="card rounded shadow-sm">
       <form [formGroup]="form">
-        <!-- <p>Form value: {{form.value | json}}</p>
-    <p>Form value: {{form.status | json}}</p> -->
+        <!-- <p>Form value: {{ form.value | json }}</p>
+        <p>Form value: {{ form.status | json }}</p> -->
+
         <div class="p-3">
           <div class="row">
             <div class="form-group col-md-12">
               <label>Tema</label>
               <input
                 type="text"
-                [ngClass]="{ 'is-invalid': f.tema.errors && f.tema.touched }"
+                [ngClass]="cssValidator(f.tema)"
                 class="form-control is-invalid"
                 formControlName="tema"
-                placeholder="Insira o Tema" [(ngModel)]="evento.tema"
+                placeholder="Insira o Tema"
+                [(ngModel)]="evento.tema"
               />
               <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
                 Tema é obrigatório.
@@ -35,8 +37,9 @@
               <input
                 type="text"
                 class="form-control is-invalid"
-                [ngClass]="{ 'is-invalid': f.local.errors && f.local.touched }"
-                formControlName="local" [(ngModel)]="evento.local"
+                [ngClass]="cssValidator(f.local)"
+                formControlName="local"
+                [(ngModel)]="evento.local"
                 placeholder=""
               />
               <div *ngIf="f.local.errors?.required" class="invalid-feedback">
@@ -48,10 +51,9 @@
               <input
                 type="datetime"
                 class="form-control is-invalid"
-                [ngClass]="{
-                  'is-invalid': f.dataEvento.errors && f.dataEvento.touched
-                }"
-                formControlName="dataEvento" [(ngModel)]="evento.dataEvento"
+                [ngClass]="cssValidator(f.dataEvento)"
+                formControlName="dataEvento"
+                [(ngModel)]="evento.dataEvento"
                 placeholder=""
                 bsDatepicker
                 [bsConfig]="bsConfig"
@@ -70,10 +72,9 @@
               <input
                 type="text"
                 class="form-control is-invalid is-invalid"
-                [ngClass]="{
-                  'is-invalid': f.qtdPessoas.errors && f.qtdPessoas.touched
-                }"
-                formControlName="qtdPessoas" [(ngModel)]="evento.qtdPessoas"
+                [ngClass]="cssValidator(f.qtdPessoas)"
+                formControlName="qtdPessoas"
+                [(ngModel)]="evento.qtdPessoas"
                 placeholder=""
               />
               <div
@@ -88,10 +89,9 @@
               <input
                 type="text"
                 class="form-control is-invalid"
-                [ngClass]="{
-                  'is-invalid': f.telefone.errors && f.telefone.touched
-                }"
-                formControlName="telefone" [(ngModel)]="evento.telefone"
+                [ngClass]="cssValidator(f.telefone)"
+                formControlName="telefone"
+                [(ngModel)]="evento.telefone"
                 placeholder="(000) 90000-0000"
               />
               <div *ngIf="f.telefone.errors?.required" class="invalid-feedback">
@@ -103,8 +103,9 @@
               <input
                 type="text"
                 class="form-control is-invalid"
-                [ngClass]="{ 'is-invalid': f.email.errors && f.email.touched }"
-                formControlName="email" [(ngModel)]="evento.email"
+                [ngClass]="cssValidator(f.email)"
+                formControlName="email"
+                [(ngModel)]="evento.email"
                 placeholder="e-mail"
               />
               <div *ngIf="f.email.errors?.required" class="invalid-feedback">

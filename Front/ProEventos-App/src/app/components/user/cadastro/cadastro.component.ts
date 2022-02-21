@@ -5,7 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ValidatorField } from '@app/Helpers/ValidatorsField';
+import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/models/Identity/User';
+import { UserService } from 'src/services/User.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -14,12 +18,16 @@ import { ValidatorField } from '@app/Helpers/ValidatorsField';
 })
 export class CadastroComponent implements OnInit {
   form!: FormGroup;
-
+  user = {} as User;
   get f(): any {
     return this.form.controls;
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private router: Router,
+              private toaster: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.validation();
@@ -29,9 +37,22 @@ export class CadastroComponent implements OnInit {
     this.form.reset();
   }
 
+  public register(): void{
+    this.user = { ... this.form.value };
+    this.userService.register(this.user).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/dashboard')
+      },
+      error: (err) => {
+        this.toaster.error("Erro ao criar o usuário", "Erro")
+        console.log(err)
+      }
+    })
+  }
+
   public validation(): void {
     const formOptions: AbstractControlOptions = {
-      validators: ValidatorField.MustMatch('senha', 'confirmacaoSenha'),
+      validators: ValidatorField.MustMatch('password', 'confirmacaoPassword'),
     };
 
     this.form = this.fb.group(
@@ -39,9 +60,9 @@ export class CadastroComponent implements OnInit {
         primeiroNome: ['', Validators.required],
         ultimoNome: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        usuario: ['', Validators.required],
-        senha: ['', Validators.required],
-        confirmacaoSenha: ['', Validators.required],
+        userName: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmacaoPassword: ['', Validators.required],
       },
       formOptions
     );

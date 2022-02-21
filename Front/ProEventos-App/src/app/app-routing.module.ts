@@ -5,53 +5,49 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EventoDetalheComponent } from './components/evento-detalhe/evento-detalhe.component';
 import { EventoListaComponent } from './components/evento-lista/evento-lista.component';
 import { EventosComponent } from './components/eventos/eventos.component';
+import { HomeComponent } from './components/home/home.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
 import { CadastroComponent } from './components/user/cadastro/cadastro.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { UserComponent } from './components/user/user.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
-  {
-    path: 'eventos',
-    redirectTo: 'eventos/lista',
-  },
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'eventos', redirectTo: 'eventos/lista' },
 
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'user', redirectTo: 'user/perfil'},
+      { path: 'user/perfil', component: PerfilComponent },
+      {
+        path: 'eventos',
+        component: EventosComponent,
+        children: [
+          { path: 'detalhe/:id', component: EventoDetalheComponent },
+          { path: 'detalhe', component: EventoDetalheComponent },
+          { path: 'lista', component: EventoListaComponent },
+        ],
+      },
+      { path: 'dashboard', component: DashboardComponent},
+      { path: 'palestrantes', component: PalestrantesComponent},
+      { path: 'contatos', component: ContatosComponent },
+    ]
+  },
   {
     path: 'user',
     component: UserComponent,
     children: [
       { path: 'cadastro', component: CadastroComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'perfil', component: PerfilComponent },
     ],
   },
-  {
-    path: 'eventos',
-    component: EventosComponent,
-    children: [
-      { path: 'detalhe/:id', component: EventoDetalheComponent },
-      { path: 'detalhe', component: EventoDetalheComponent },
-      { path: 'lista', component: EventoListaComponent },
-    ],
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-  },
-  {
-    path: 'palestrantes',
-    component: PalestrantesComponent,
-  },
-  {
-    path: 'contatos',
-    component: ContatosComponent,
-  },
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  },
+  { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
 
 @NgModule({

@@ -21,7 +21,7 @@ namespace ProEventos.API.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet("GetUser/{userName}")]
+        [HttpGet("GetUser")]
         [AllowAnonymous]
         public async Task<IActionResult> GetUser()
         {
@@ -51,7 +51,13 @@ namespace ProEventos.API.Controllers
 
                 var user = await _userService.CreateAccontAsync(userViewModel);
                 if (user != null)
-                    return Ok(user);
+                    return Ok(new
+                    {
+                        UserName = user.UserName,
+                        PrimeiroNome = user.PrimeiroNome,
+                        UltimoNome = user.UltimoNome,
+                        token = _tokenService.CreateToken(user).Result
+                    });
 
                 return BadRequest("Usuário não cadastrado");
             }
@@ -83,7 +89,6 @@ namespace ProEventos.API.Controllers
                     UltimoNome = user.UltimoNome,
                     token = _tokenService.CreateToken(user).Result
                 }
-
                 );
             }
             catch (System.Exception e)
@@ -98,14 +103,24 @@ namespace ProEventos.API.Controllers
         {
             try
             {
+                if (userViewModel.UserName != User.GetUserName())
+                    return Unauthorized("Usuário inválido");
+
                 var user = await _userService.GetUserByUserNameAsync(User.GetUserName()!);
                 if (user == null)
                     return Unauthorized("Usuário inválido");
 
                 var userUpdate = await _userService.UpdateUser(userViewModel);
                 if (userUpdate == null)
-                    return NotFound();
-                return Ok(userUpdate);
+                    return NoContent();
+                return Ok(new
+                {
+                    UserName = userUpdate.UserName,
+                    PrimeiroNome = userUpdate.PrimeiroNome,
+                    UltimoNome = userUpdate.UltimoNome,
+                    token = _tokenService.CreateToken(userUpdate).Result
+                }
+                );
             }
             catch (System.Exception e)
             {

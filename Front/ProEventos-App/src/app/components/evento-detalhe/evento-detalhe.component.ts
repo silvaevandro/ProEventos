@@ -27,7 +27,7 @@ import { LoteService } from 'src/services/lote.service';
 export class EventoDetalheComponent implements OnInit {
   form!: FormGroup;
   locale = 'pt-BR';
-  evento!: Evento;
+  evento = {} as Evento;
   trnMode = "post";
   eventoId: number = 0;
   loteAtual = { id: 0, nome: '', index: 0 };
@@ -112,8 +112,8 @@ export class EventoDetalheComponent implements OnInit {
   }
 
   public salvarEvento(): void {
-    this.spinner.show();
-    if (this.form.valid) {
+    // this.spinner.show();
+    // if (this.form.valid) {
       if (this.trnMode == 'post') {
         this.evento = { ... this.form.value }
         this.eventoService.postEvento(this.evento).subscribe({
@@ -142,7 +142,7 @@ export class EventoDetalheComponent implements OnInit {
           complete: () => {}
         }).add(() => { this.spinner.hide() });
       }
-    }
+    // }
   }
 
 

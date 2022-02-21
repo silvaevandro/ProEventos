@@ -43,16 +43,14 @@ namespace ProEventos.Application.DomainService
             }
         }
 
-        public async Task<UserViewModel> CreateAccontAsync(UserViewModel userViewModel)
+        public async Task<UserUpdateViewModel> CreateAccontAsync(UserViewModel userViewModel)
         {
             try
             {
                 var user = _mapper.Map<User>(userViewModel);
                 var result = await _userManager.CreateAsync(user, userViewModel.Password);
                 if (result.Succeeded)
-                {
-                    return _mapper.Map<UserViewModel>(user);
-                }
+                    return _mapper.Map<UserUpdateViewModel>(user);
                 return null;
             }
             catch (System.Exception ex)
@@ -82,12 +80,16 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                var user = await _userRepository.GetUsersByNameAsync(userUpdateViewModel.UserName);
+                var user = await _userRepository.GetUsersByNameAsync(userUpdateViewModel.UserName!);
                 if (user == null)
                     return null;
+                userUpdateViewModel.Id = user.Id;
                 _mapper.Map(userUpdateViewModel, user);
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, userUpdateViewModel.Password);
+                if (userUpdateViewModel.Password != null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, userUpdateViewModel.Password);
+                }
                 _userRepository.Update<User>(user);
                 if (await _userRepository.SaveChangeAsync())
                 {

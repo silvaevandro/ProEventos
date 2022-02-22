@@ -16,6 +16,7 @@ namespace ProEventos.Application.AutoMapper
             CreateMap<User, UserViewModel>().ReverseMap();
             CreateMap<User, UserLoginViewModel>().ReverseMap();
             CreateMap<User, UserUpdateViewModel>().ReverseMap();
+            
         }
     }
 }

@@ -1,4 +1,5 @@
 using ProEventos.Application.ViewModels;
+using ProEventos.Infra.Data.Models;
 
 namespace ProEventos.Application.DomainService
 {
@@ -7,8 +8,7 @@ namespace ProEventos.Application.DomainService
         Task<EventoViewModel> AddEvento(int userId, EventoViewModel model);
         Task<EventoViewModel> UpdateEvento(int userId, int eventoId, EventoViewModel model);
         Task<bool> DeleteEvento(int userId, int eventoId);
-        Task<EventoViewModel[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false);
-        Task<EventoViewModel[]> GetAllEventosAsync(int userId, bool includePalestrantes = false);
+        Task<PageList<EventoViewModel>> GetAllEventosAsync(int userId, PageParms pageParms, bool includePalestrantes = false);
         Task<EventoViewModel> GetEventoByIdAsync(int userId, int eventoId, bool includePalestrantes = false);
     }
 }

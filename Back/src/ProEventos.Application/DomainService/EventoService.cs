@@ -2,6 +2,7 @@ using ProEventos.Application.ViewModels;
 using ProEventos.Infra.Data;
 using ProEventos.Domain.Entities;
 using AutoMapper;
+using ProEventos.Infra.Data.Models;
 
 namespace ProEventos.Application.DomainService
 {
@@ -26,7 +27,7 @@ namespace ProEventos.Application.DomainService
                 geralRepository.Add<Evento>(evento);
                 if (await geralRepository.SaveChangeAsync())
                 {
-                    var evento_ins = await eventoRepository.GetAllEventosByIdAsync(userId, evento.Id, false);
+                    var evento_ins = await eventoRepository.GetEventoByIdAsync(userId, evento.Id, false);
                     return mapper.Map<EventoViewModel>(evento_ins);
                 }
                 return null;
@@ -40,7 +41,7 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                var evento = await eventoRepository.GetAllEventosByIdAsync(userId, eventoId, false);
+                var evento = await eventoRepository.GetEventoByIdAsync(userId, eventoId, false);
                 if (evento == null)
                     return null;
 
@@ -52,7 +53,7 @@ namespace ProEventos.Application.DomainService
 
                 if (await geralRepository.SaveChangeAsync())
                 {
-                    var evento_atz = await eventoRepository.GetAllEventosByIdAsync(userId, evento_upd.Id, false);
+                    var evento_atz = await eventoRepository.GetEventoByIdAsync(userId, evento_upd.Id, false);
                     return mapper.Map<EventoViewModel>(evento_atz);
                 }
                 return null;
@@ -67,7 +68,7 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                var evento = await eventoRepository.GetAllEventosByIdAsync(userId, eventoId, false);
+                var evento = await eventoRepository.GetEventoByIdAsync(userId, eventoId, false);
                 if (evento == null)
                     throw new Exception("Evento para delete não encontrado.");
 
@@ -80,12 +81,17 @@ namespace ProEventos.Application.DomainService
             }
         }
 
-        public async Task<EventoViewModel[]> GetAllEventosAsync(int userId, bool includePalestrantes = false)
+        public async Task<PageList<EventoViewModel>> GetAllEventosAsync(int userId, PageParms pageParms, bool includePalestrantes = false)
         {
             try
             {
-                var eventos = await eventoRepository.GetAllEventosAsync(userId, includePalestrantes);
-                return mapper.Map<EventoViewModel[]>(eventos);
+                var eventos = await eventoRepository.GetAllEventosAsync(userId, pageParms, includePalestrantes);
+                var result = mapper.Map<PageList<EventoViewModel>>(eventos);
+                result.CurrentPage = eventos.CurrentPage;
+                result.TotalPages = eventos.TotalPages;
+                result.PageSize = eventos.PageSize;
+                result.TotalCount = eventos.TotalCount;                
+                return result;
             }
             catch (System.Exception ex)
             {
@@ -97,7 +103,7 @@ namespace ProEventos.Application.DomainService
         {
             try
             {
-                var evento = await eventoRepository.GetAllEventosByIdAsync(userId, eventoId, includePalestrantes);
+                var evento = await eventoRepository.GetEventoByIdAsync(userId, eventoId, includePalestrantes);
                 return mapper.Map<EventoViewModel>(evento);
             }
             catch (System.Exception ex)
@@ -106,20 +112,20 @@ namespace ProEventos.Application.DomainService
             }
         }
 
-        public async Task<EventoViewModel[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        {
-            try
-            {
-                var eventos = await eventoRepository.GetAllEventosByTemaAsync(userId, tema, includePalestrantes);
-                if (eventos == null)
-                    return null;
-                return mapper.Map<EventoViewModel[]>(eventos);
-            }
-            catch (System.Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        // public async Task<EventoViewModel[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
+        // {
+        //     try
+        //     {
+        //         var eventos = await eventoRepository.GetAllEventosByTemaAsync(userId, tema, includePalestrantes);
+        //         if (eventos == null)
+        //             return null;
+        //         return mapper.Map<EventoViewModel[]>(eventos);
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         throw new Exception(ex.Message);
+        //     }
+        // }
 
     }
 }

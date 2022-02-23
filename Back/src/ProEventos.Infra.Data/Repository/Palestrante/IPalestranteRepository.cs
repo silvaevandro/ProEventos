@@ -1,12 +1,11 @@
 using ProEventos.Domain.Entities;
+using ProEventos.Infra.Data.Models;
 
 namespace ProEventos.Infra.Data
 {
-    public interface IPalestranteRepository
+    public interface IPalestranteRepository: IGeralRepository
     {
-        //Palestrantes
-        Task<Palestrante[]> GetAllPalestrantesByNomeAsync(string nome, bool includeEventos);
-        Task<Palestrante[]> GetAllPalestrantesAsync(bool includeEventos);
-        Task<Palestrante> GetAllPalestranteByIdAsync(int palestranteId, bool includeEventos);
+        Task<PageList<Palestrante>> GetAllPalestrantesAsync(PageParms pageParms0, bool includeEventos);
+        Task<Palestrante> GetPalestranteByUserIdAsync(int userId, bool includeEventos);
     }
 }

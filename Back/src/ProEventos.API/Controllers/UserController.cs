@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
+using ProEventos.API.Helpers;
 using ProEventos.Application.DomainService;
 using ProEventos.Application.ViewModels;
 
@@ -13,12 +14,16 @@ namespace ProEventos.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
+        private readonly IUtil _util;
+        private readonly string _destino = "Perfil";
 
         public UserController(IUserService userService,
-                              ITokenService tokenService)
+                              ITokenService tokenService,
+                              IUtil util)
         {
             _userService = userService;
             _tokenService = tokenService;
+            _util = util;
         }
 
         [HttpGet("GetUser")]
@@ -127,5 +132,34 @@ namespace ProEventos.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar atualizar Usuário: {e.Message}");
             }
         }
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                if (Request.Form.Files.Count == 0)
+                    return NoContent();
+
+                var user = await _userService.GetUserByUserNameAsync(User.GetUserName()!);
+                if (user == null)
+                    return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _util.DeleteImage(user.ImagemURL!, _destino);
+                    user.ImagemURL = await _util.SaveImage(file, _destino);
+                }
+                var userRetorno = await _userService.UpdateUser(user);
+                if (userRetorno == null)
+                    return BadRequest("Erro ao realizar o Upload de Foto do Usuário.");
+                return Ok(userRetorno);
+            }
+            catch (System.Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao realizar o Upload de Foto do Usuário {e.Message}");
+            }
+        }        
     }
 }

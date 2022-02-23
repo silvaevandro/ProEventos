@@ -12,7 +12,7 @@ namespace ProEventos.Application.ViewModels
         public string? Funcao { get; set; }
         public string? Descricao { get; set; }
         public string? Password { get; set; }
-
+        public string? ImagemURL { get; set; }
         public string? Token { get; set; }
 
     }

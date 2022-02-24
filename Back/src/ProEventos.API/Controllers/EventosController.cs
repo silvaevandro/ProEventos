@@ -17,7 +17,7 @@ public class EventosController : ControllerBase
     private readonly IUtil _util;
     private readonly IEventoService _eventoService;
 
-    private readonly string _destino = "Images";
+    private readonly string _destino = "images";
 
     public EventosController(IEventoService eventoService,
                              IUserService userService,

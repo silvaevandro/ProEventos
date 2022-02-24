@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControlOptions,
@@ -7,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ValidatorField } from '@app/Helpers/ValidatorsField';
+import { environment } from '@enviroments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { UserUpdate } from 'src/models/Identity/UserUpdate';
@@ -18,78 +20,55 @@ import { UserService } from 'src/services/User.service';
   styleUrls: ['./perfil.component.scss'],
 })
 export class PerfilComponent implements OnInit {
-  userUpdate = {} as UserUpdate;
-  form!: FormGroup;
-  get f(): any {
-    return this.form.controls;
+
+  //form!: FormGroup;
+  usuario = {} as UserUpdate;
+  public imagemURL: string = "";
+  public file!: File;
+
+  get ehPalestrante(): boolean{
+    return this.usuario.funcao == "Palestrante"
   }
 
   constructor(
-    private fb: FormBuilder,
-    public userService: UserService,
-    private router: Router,
-    private toaster: ToastrService,
     private spinner: NgxSpinnerService,
+    private userService: UserService,
+    private toastr: ToastrService,
   ) { }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit(): void {
-    this.validation();
-    this.carregarUsuario();
   }
 
-  public resetForm(): void {
-    this.form.reset();
+  public getFormValue(usuario: UserUpdate): void{
+    this.usuario = usuario
+    if (usuario.imagemURL)
+      this.imagemURL = `${environment.apiURLPerfil}${usuario.imagemURL}`
+    else
+      this.imagemURL = "assets/img/perfil.jpg"
   }
 
-  public carregarUsuario():void {
+  public onFileChange(ev: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+
+    this.file = ev.target.files[0];
+    reader.readAsDataURL(this.file);
+    this.uploadImagem();
+  }
+
+  public uploadImagem(): void {
     this.spinner.show();
-    this.userService.getUser().subscribe({
-      next: (resp) => {
-        this.userUpdate = resp;
-        this.form.patchValue(this.userUpdate);
-        this.toaster.success('Usuário carregado com sucesso.')
+    this.userService.postUpload(this.file).subscribe({
+      next:() => {
+        this.toastr.success('Imagem atualizada com Sucesso', 'Sucesso!');
       },
-      error: (err) => {
-        this.toaster.error("Erro ao Carregar o Usuário", "Erro")
-        console.log(err)
+      error:(err: any) => {
+        this.toastr.error('Erro ao fazer upload de imagem', 'Erro!');
+        console.error(err);
       }
-    }).add(() => {this.spinner.hide()});
-  }
-
-  public onSubmit(): void{
-    this.atualizarUsuario();
-  }
-
-  public atualizarUsuario(): void {
-    this.userUpdate = { ...this.form.value }
-    this.spinner.show();
-    this.userService.updateUser(this.userUpdate).subscribe({
-      next: () => {
-        this.toaster.success('Usuário atualizado com sucesso.')
-      },
-      error: (err) => {
-        this.toaster.error("Erro ao Atualizar o Usuário", "Erro")
-        console.log(err)
-      }
-    }).add(() => {this.spinner.hide()});
-  }
-
-  public validation(): void {
-    // const formOptions: AbstractControlOptions = {
-    //   validators: ValidatorField.MustMatch('senha', 'confirmacaoSenha'),
-    // };
-
-    this.form = this.fb.group({
-      userName:[''],
-      titulo: ['', [Validators.required]],
-      primeiroNome: ['', [Validators.required]],
-      ultimoNome: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]],
-      funcao: ['', [Validators.required]],
-      descricao: [''],
-      password: [''],
-      confirmacaoPassword: [''],
-    });
+    }).add(() => this.spinner.hide());
   }
 }

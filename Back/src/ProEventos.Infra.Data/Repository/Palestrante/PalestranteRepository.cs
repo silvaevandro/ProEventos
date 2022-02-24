@@ -20,7 +20,8 @@ namespace ProEventos.Infra.Data.Repository
             IQueryable<Palestrante> query = _context.palestrantes
                     .Include(p => p.RedesSociais)
                     .Include(p => p.User);
-            if (includeEventos){
+            if (includeEventos)
+            {
                 query = query.Include(p => p.PalestrantesEventos!).ThenInclude(pe => pe.Evento);
             }
             query = query.AsNoTracking()
@@ -28,22 +29,10 @@ namespace ProEventos.Infra.Data.Repository
                                   || p.User.PrimeiroNome!.ToLower().Contains(pageParms.Term.ToLower())
                                   || p.User.UltimoNome!.ToLower().Contains(pageParms.Term.ToLower()))
                                   && p.User.Funcao == Domain.Enum.Funcao.Palestrante
-                                ) 
+                                )
                          .OrderBy(p => p.Id);
             return await PageList<Palestrante>.CreateAsync(query, pageParms.PageNumber, pageParms.pageSize);
         }
-
-        // public async Task<Palestrante[]> GetAllPalestrantesByNomeAsync(string nome, bool includeEventos = false)
-        // {
-        //     IQueryable<Palestrante> query = _context.palestrantes
-        //                     .Include(p => p.RedesSociais);
-        //     if (includeEventos)
-        //         query = query.Include(p => p.PalestrantesEventos).ThenInclude(pe => pe.Evento);
-
-
-        //     query = query.OrderBy(p => p.Id).Where(p => p.User.PrimeiroNome.ToLower().Contains(nome.ToLower()));
-        //     return await query.ToArrayAsync();
-        // }
 
         public async Task<Palestrante> GetPalestranteByUserIdAsync(int userId, bool includeEventos)
         {
@@ -54,9 +43,8 @@ namespace ProEventos.Infra.Data.Repository
                 query = query.Include(p => p.PalestrantesEventos).ThenInclude(pe => pe.Evento);
 
 
-            query = query.OrderBy(e => e.Id).Where(e => e.Id.Equals(userId));
+            query = query.OrderBy(e => e.Id).Where(e => e.UserId.Equals(userId));
             return await query.FirstOrDefaultAsync();
         }
-
     }
 }

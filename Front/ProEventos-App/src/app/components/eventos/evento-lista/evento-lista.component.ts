@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Evento } from 'src/models/Evento';
 import { EventoService } from 'src/services/evento.service';
@@ -10,18 +9,12 @@ import { environment } from '@enviroments/environment';
 import { PaginatedResult, Pagination } from 'src/models/Pagination';
 import { debounceTime, Subject } from 'rxjs';
 
-
-type NewType = ToastrService;
-
 @Component({
   selector: 'app-evento-lista',
   templateUrl: './evento-lista.component.html',
   styleUrls: ['./evento-lista.component.scss']
 })
 export class EventoListaComponent implements OnInit {
-
-
-
   public modalRef?: BsModalRef;
   public message?: string;
   public eventoId = 0;
@@ -53,7 +46,7 @@ export class EventoListaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.pagination = { currentPage: 1, pageSize: 3, totalItems: 3 } as Pagination;
+    this.pagination = { currentPage: 1, pageSize: 7, totalItems: 7 } as Pagination;
     this.getEventos();
   }
 
@@ -104,8 +97,8 @@ export class EventoListaComponent implements OnInit {
   }
 
   public mostraImage(imagemURL: string): string{
-    return imagemURL != ""
-      ? `${environment.apiURL}/resources/Images/${imagemURL}`
+    return imagemURL != null
+      ? `${environment.apiURL}/resources/images/${imagemURL}`
       : "assets/img/semimagem.jpeg"
   }
 
@@ -115,7 +108,6 @@ export class EventoListaComponent implements OnInit {
     this.eventoService.deleteEvento(this.eventoId).subscribe({
       next: (result: any) => {
         if (result.message == "Deletado") {
-          console.log(result);
           this.toastr.success("Evento deletado com sucesso.", 'Deletado!')
           this.spinner.hide();
           this.getEventos();

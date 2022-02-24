@@ -45,7 +45,7 @@ export class CadastroComponent implements OnInit {
       },
       error: (err) => {
         this.toaster.error("Erro ao criar o usuário", "Erro")
-        console.log(err)
+        console.error(err)
       }
     })
   }

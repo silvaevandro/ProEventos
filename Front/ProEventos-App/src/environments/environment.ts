@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiURL: 'https://localhost:7272',
-  apiURLImages: 'https://localhost:7272/resources/Images/',
+  apiURLImages: 'https://localhost:7272/resources/images/',
+  apiURLPerfil: 'https://localhost:7272/resources/perfil/',
 };
 
 /*

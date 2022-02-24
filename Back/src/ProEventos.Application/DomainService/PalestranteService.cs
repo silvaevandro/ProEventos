@@ -44,7 +44,7 @@ namespace ProEventos.Application.DomainService
                     return null;
 
                 model.Id = palestrante.Id;
-                //*model.UserId = userId;
+                model.UserId = userId;
 
                 var palestranteRet = _mapper.Map<Palestrante>(model);
                 _palestranteRepository.Update<Palestrante>(palestranteRet);

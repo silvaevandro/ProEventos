@@ -15,7 +15,7 @@ namespace ProEventos.API.Controllers
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
         private readonly IUtil _util;
-        private readonly string _destino = "Perfil";
+        private readonly string _destino = "perfil";
 
         public UserController(IUserService userService,
                               ITokenService tokenService,
@@ -148,7 +148,7 @@ namespace ProEventos.API.Controllers
                 var file = Request.Form.Files[0];
                 if (file.Length > 0)
                 {
-                    _util.DeleteImage(user.ImagemURL!, _destino);
+                    _util.DeleteImage(user.ImagemURL, _destino);
                     user.ImagemURL = await _util.SaveImage(file, _destino);
                 }
                 var userRetorno = await _userService.UpdateUser(user);

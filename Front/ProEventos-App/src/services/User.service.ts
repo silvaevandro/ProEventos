@@ -12,12 +12,12 @@ export class UserService {
   public currentUserSource = new ReplaySubject<User>(1);
   public currentUser$ = this.currentUserSource.asObservable();
 
-  baseUrl = environment.apiURL + '/api/user/';
+  baseUrl = environment.apiURL + '/api/user';
 
   constructor(private http: HttpClient) { }
 
   public login(model: any): Observable<void> {
-    return this.http.post<User>(this.baseUrl + 'login', model).pipe(
+    return this.http.post<User>(`${this.baseUrl}/login`, model).pipe(
       take(1),
       map((response: User) => {
         const user = response;
@@ -29,7 +29,7 @@ export class UserService {
   }
 
   public register(model: any): Observable<void>{
-    return this.http.post<User>(this.baseUrl + 'register', model).pipe(
+    return this.http.post<User>(`${this.baseUrl}/register`, model).pipe(
       take(1),
       map((response: User) => {
         const user = response;
@@ -41,11 +41,11 @@ export class UserService {
   }
 
   public getUser(): Observable<UserUpdate>{
-    return this.http.get<UserUpdate>(`${this.baseUrl}getuser`).pipe(take(1));
+    return this.http.get<UserUpdate>(`${this.baseUrl}/getuser`).pipe(take(1));
   }
 
   public updateUser(model: any): Observable<void>{
-    return this.http.put<UserUpdate>(`${this.baseUrl}update`, model).pipe(
+    return this.http.put<UserUpdate>(`${this.baseUrl}/update`, model).pipe(
       take(1),
       map((user: UserUpdate) => {
           this.setCurrentUser(user)
@@ -63,5 +63,15 @@ export class UserService {
   public setCurrentUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
+  }
+
+
+  public postUpload(file: any): Observable<UserUpdate> {
+    const fileToUpload = file as File;
+    const formData = new FormData();
+    formData.append('file', fileToUpload)
+    return this.http
+      .post<UserUpdate>(`${this.baseUrl}/upload-image`,formData )
+      .pipe(take(1));
   }
 }

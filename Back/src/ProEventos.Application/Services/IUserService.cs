@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProEventos.Application.ViewModels;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public interface IUserService
     {

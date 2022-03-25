@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using ProEventos.Application.ViewModels;
 using ProEventos.Domain.Identity;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public class TokenService : ITokenService
     {
@@ -36,6 +36,7 @@ namespace ProEventos.Application.DomainService
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
             };
+            
 
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

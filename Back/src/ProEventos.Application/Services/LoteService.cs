@@ -3,7 +3,7 @@ using ProEventos.Infra.Data;
 using ProEventos.Domain.Entities;
 using AutoMapper;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public class LoteService : ILoteService
     {

@@ -1,7 +1,7 @@
 using ProEventos.Application.ViewModels;
 using ProEventos.Infra.Data.Models;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public interface IEventoService
     {

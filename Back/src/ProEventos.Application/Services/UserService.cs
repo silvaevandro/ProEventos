@@ -9,7 +9,7 @@ using ProEventos.Application.ViewModels;
 using ProEventos.Domain.Identity;
 using ProEventos.Infra.Data;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public class UserService : IUserService
     {

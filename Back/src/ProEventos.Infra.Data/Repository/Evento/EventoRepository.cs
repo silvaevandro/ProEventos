@@ -5,11 +5,11 @@ using ProEventos.Infra.Data.Models;
 
 namespace ProEventos.Infra.Data.Repository
 {
-    public class EventoRepository : IEventoRepository
+    public class EventoRepository : GeralRepository, IEventoRepository
     {
         private readonly ProEventosContext _context;
 
-        public EventoRepository(ProEventosContext context)
+        public EventoRepository(ProEventosContext context) : base(context)
         {
             this._context = context;
             this._context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;

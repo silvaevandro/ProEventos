@@ -1,6 +1,6 @@
 using ProEventos.Application.ViewModels;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public interface ILoteService
     {

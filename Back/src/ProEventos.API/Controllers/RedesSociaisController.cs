@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
-using ProEventos.Application.DomainService;
+using ProEventos.Application.Services;
 using ProEventos.Application.ViewModels;
 
 namespace ProEventos.API.Controllers;

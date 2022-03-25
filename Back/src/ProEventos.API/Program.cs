@@ -1,6 +1,6 @@
 using ProEventos.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using ProEventos.Application.DomainService;
+using ProEventos.Application.Services;
 using ProEventos.Infra.Data.Repository;
 using ProEventos.Infra.Data;
 using Microsoft.Extensions.FileProviders;
@@ -12,14 +12,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProEventos.API.Helpers;
+using ProEventos.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
+
 builder.Services.AddDbContext<ProEventosContext>(
     context => context.UseMySql(builder.Configuration.GetConnectionString("Default"), new MySqlServerVersion(new Version(8, 0, 11)))
 );
+
 
 builder.Services.AddIdentityCore<User>(options =>
 {
@@ -62,6 +65,8 @@ builder.Services.AddCors(options =>
                                               .AllowAnyMethod();
                       });
 });
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -96,23 +101,9 @@ builder.Services.AddSwaggerGen(options =>
                     }
     });
 });
-builder.Services.AddScoped<IEventoService, EventoService>();
-builder.Services.AddScoped<ILoteService, LoteService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPalestranteService, PalestranteService>();
-builder.Services.AddScoped<IRedeSocialService, RedeSocialService>();
 
-builder.Services.AddScoped<IGeralRepository, GeralRepository>();
-builder.Services.AddScoped<IEventoRepository, EventoRepository>();
-builder.Services.AddScoped<ILoteRepository, LoteRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IPalestranteRepository, PalestranteRepository>();
-builder.Services.AddScoped<IRedeSocialRepository, RedeSocialRepository>();
-
-builder.Services.AddScoped<IUtil, Util>();
-
-
+/*Configuração DI*/
+DependencyInjection.AddDependencyInjectionConfiguration(builder.Services);
 
 var app = builder.Build();
 
@@ -134,11 +125,10 @@ app.UseStaticFiles(new StaticFileOptions()
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-
 
 app.Run();
 

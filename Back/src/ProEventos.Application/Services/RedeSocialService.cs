@@ -4,7 +4,7 @@ using ProEventos.Domain.Entities;
 using AutoMapper;
 using ProEventos.Infra.Data.Repository;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public class RedeSocialService : IRedeSocialService
     {

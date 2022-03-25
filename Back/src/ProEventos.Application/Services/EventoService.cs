@@ -4,18 +4,16 @@ using ProEventos.Domain.Entities;
 using AutoMapper;
 using ProEventos.Infra.Data.Models;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public class EventoService : IEventoService
     {
-        private readonly IGeralRepository geralRepository;
         private readonly IEventoRepository eventoRepository;
         private readonly IMapper mapper;
 
-        public EventoService(IGeralRepository geralRepository, IEventoRepository eventoRepository, IMapper mapper)
+        public EventoService(IEventoRepository eventoRepository, IMapper mapper)
         {
             this.eventoRepository = eventoRepository;
-            this.geralRepository = geralRepository;
             this.mapper = mapper;
         }
         public async Task<EventoViewModel> AddEvento(int userId, EventoViewModel model)
@@ -24,8 +22,8 @@ namespace ProEventos.Application.DomainService
             {
                 var evento = mapper.Map<Evento>(model);
                 evento.UserId = userId;
-                geralRepository.Add<Evento>(evento);
-                if (await geralRepository.SaveChangeAsync())
+                eventoRepository.Add<Evento>(evento);
+                if (await eventoRepository.SaveChangeAsync())
                 {
                     var evento_ins = await eventoRepository.GetEventoByIdAsync(userId, evento.Id, false);
                     return mapper.Map<EventoViewModel>(evento_ins);
@@ -49,9 +47,9 @@ namespace ProEventos.Application.DomainService
                 model.UserId = userId;
 
                 var evento_upd = mapper.Map<Evento>(model);
-                geralRepository.Update<Evento>(evento_upd);
+                eventoRepository.Update<Evento>(evento_upd);
 
-                if (await geralRepository.SaveChangeAsync())
+                if (await eventoRepository.SaveChangeAsync())
                 {
                     var evento_atz = await eventoRepository.GetEventoByIdAsync(userId, evento_upd.Id, false);
                     return mapper.Map<EventoViewModel>(evento_atz);
@@ -63,7 +61,6 @@ namespace ProEventos.Application.DomainService
                 throw new Exception(message: ex.InnerException?.Message);
             }
         }
-
         public async Task<bool> DeleteEvento(int userId, int eventoId)
         {
             try
@@ -72,15 +69,14 @@ namespace ProEventos.Application.DomainService
                 if (evento == null)
                     throw new Exception("Evento para delete não encontrado.");
 
-                geralRepository.Delete(evento);
-                return await geralRepository.SaveChangeAsync();
+                eventoRepository.Delete(evento);
+                return await eventoRepository.SaveChangeAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
         public async Task<PageList<EventoViewModel>> GetAllEventosAsync(int userId, PageParms pageParms, bool includePalestrantes = false)
         {
             try
@@ -98,7 +94,6 @@ namespace ProEventos.Application.DomainService
                 throw new Exception(ex.Message);
             }
         }
-
         public async Task<EventoViewModel> GetEventoByIdAsync(int userId, int eventoId, bool includePalestrantes = false)
         {
             try
@@ -111,21 +106,5 @@ namespace ProEventos.Application.DomainService
                 throw new Exception(ex.Message);
             }
         }
-
-        // public async Task<EventoViewModel[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        // {
-        //     try
-        //     {
-        //         var eventos = await eventoRepository.GetAllEventosByTemaAsync(userId, tema, includePalestrantes);
-        //         if (eventos == null)
-        //             return null;
-        //         return mapper.Map<EventoViewModel[]>(eventos);
-        //     }
-        //     catch (System.Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-
     }
 }

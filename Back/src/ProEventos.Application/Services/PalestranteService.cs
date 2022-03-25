@@ -4,14 +4,14 @@ using ProEventos.Domain.Entities;
 using AutoMapper;
 using ProEventos.Infra.Data.Models;
 
-namespace ProEventos.Application.DomainService
+namespace ProEventos.Application.Services
 {
     public class PalestranteService : IPalestranteService
     {
         private readonly IPalestranteRepository _palestranteRepository;
         private readonly IMapper _mapper;
 
-        public PalestranteService(IGeralRepository geralRepository, IPalestranteRepository palestranteRepository, IMapper mapper)
+        public PalestranteService(IPalestranteRepository palestranteRepository, IMapper mapper)
         {
             _palestranteRepository = palestranteRepository;
             _mapper = mapper;

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
 using ProEventos.API.Helpers;
-using ProEventos.Application.DomainService;
+using ProEventos.Application.Services;
 using ProEventos.Application.ViewModels;
 using ProEventos.Infra.Data.Models;
 
@@ -29,12 +29,12 @@ public class EventosController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery]PageParms pageParams)
+    public async Task<IActionResult> Get([FromQuery] PageParms pageParams)
     {
         try
         {
             var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), pageParams, true);
-            if (eventos == null)            
+            if (eventos == null)
                 return NoContent();
 
             Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
